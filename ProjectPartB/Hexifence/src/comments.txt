@@ -1,0 +1,78 @@
+
+Comments on hexifence Project Part B
+   by Tessa Song (songt) and Nihal Mirpuri (nmirpuri)
+
+
+
+• STRUCTURE OF CODE
+
+- Board
+This is a class which represents the whole board and this includes 
+major functions which gives useful information for calculating utility values
+for 'Player' agent.
+After a new board object is created, every time a new move is made on the board,
+setBoard(Move move) function is called to update the board configuration 
+and every time a move is undone, undoMove(Move move) is called to cancel the move 
+and synchronize the board state. 
+
+- Tile
+A single 'tile' on the board, holds information about
+what kind of tile it is (eg. R, B, + or -) and the number
+of hexes that can be captured by capturing this Tile
+
+- SongtNmirpuri
+This is the agent which implements 'Player' and 'Piece'.
+All functions to communicate with Referee were implemented and this
+includes major functions to implement the approach taken (Refer to 'Approach Taken' below)
+
+
+
+• APPROACH TAKEN
+- Search Strategy
+The main strategy chosen to build this rational agent is minimax search tree with alpha beta
+pruning because this game is run by two competitive players. 
+The move which leads to the most benefit to the player will be chosen as the next by the result of 
+the search tree.
+An appropriate depth limit is set to satisfy the memory(1500K) and time limit(30secs).
+One of the noticeable features of this game is that if a cell is captured, the player 
+who had made the move is given another additional move. 
+With this unique feature, the minimax search tree can have more than one consecutive max or min layers.  
+The implementation takes this feature into consideration to calculate the utility values more
+accurately.
+
+
+- Evaluation Function
+The features to consist of our evaluation function are number of hexs captured by either
+player or opponent and the possible number of hexs to be captured by the move 
+taking 'additional move' into consideration as well. We have named the latter "maximum streak".
+This basically represents how many consecutive max or min layers can appear by the move. 
+As a result, this feature indirectly considers the number of cells with one empty edge 
+and the number of cells with two empty edges.
+
+
+- Creative Techniques
+In order to build the best evaluation function described above, a genetic algorithm was applied
+especially for improving 'weights'. The Referee class was modified to mutate and input variables
+into the AI, run it 100 times, and mutate the best of the tests.
+
+Other creative techniques involved modifying the depth dynamically, so in the early stages
+of the game, the AI whizzes through with a depth of 2. As soon as the game becomes more
+strategic, the depth increases, and will continue to increase when there are less moves
+left on the board.
+
+- Time and space complexity
+The total time complexity for the minimax tree is O(b/d). With alpha-beta pruning, 
+we can guarantee that the time complexity will be more efficient than O(b/d), with
+perfect ordering being at O(b/(d/2)
+where b is the branching factor of the tree and d is the depth.
+There is an additional important time complexity for determining the max streak, which is 
+O(b/d), however the b in this case is a much smaller b than the minimax tree b, due to the 
+max streak only branching at cell wins.
+Therefore the total time complexity for the entire function is O(b/3)
+where depth = 3.
+
+• LIBRARIES USE
+No external libraries were used in this program
+
+
+
