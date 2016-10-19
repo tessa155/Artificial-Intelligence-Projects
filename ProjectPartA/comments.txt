@@ -1,0 +1,92 @@
+
+Comments on hexifence
+   by Tessa Song (songt) and Nihal Mirpuri (nmirpuri)
+
+
+• STRUCTURE OF CODE
+TestBoard: The main class that initializes a Board class, 
+and outputs the required values for assessment
+
+Board: Reads a board as input (ideally from a text file), 
+checks for errors in the input and calculates the required 
+values for assessment
+
+Tile: A single 'tile' on the board, holds information about
+what kind of tile it is (eg. R, B, + or -) and the number
+of hexes that can be captured by capturing this Tile
+
+
+• LIBRARIES USED
+No external libraries were used in this program
+
+
+• PSEUDOCODE SUMMARY
+The major task of this project is returning three values,
+which are the number of possible moves, maximum number of hexagonal cells
+that can be captured by one move and number of hexagonal cells 
+available for capture by a single move.
+
+The first one was easiest one which we have solved by counting '+' 
+characters on the board.
+
+When it comes to the second and the third one, we come up with an
+idea to make use of capture value of each Tile, which represents 
+the number of hexagon that can be captured by making move on the tile (0,1 or 2).
+
+With these capture values calculated for all the tiles, the second and the third
+tasks get easy. For the second task, we can just add all the capture values up and
+for the third task we just need to pick up the maximum capture value.
+
+Therefore, the principle part is calculating capture value for each tile.
+
+In order to do that, every top left tile of each hexagon is passed to 
+the function which implements our algorithm. The job of the algorithm is
+checking the 5 adjacent tiles on the basis of the targeted tile and figuring out
+if there is only one '+' tile among them and the rest of them are either R or B.
+If it is, it means that the hexagon is available for capture by one move and 
+it simply increases the capture value of the '+' tile by one.
+Moreover, the tile boundary checking function is called every time to make
+this algorithm more concrete.  
+
+
+• TIME COMPLEXITY
+The Big-O for initializing a Board class is O(34n^2)
+where n is the length of a side of the Hexifence (2 or 3)
+All functions after the initialization takes constant time O(1).
+
+This is calculated by determining the time it takes to
+initialize the Board class:
+1. The Board class must check all tiles for syntax errors,
+so the minimum possible Big-O can't be less than the number
+of tiles that it needs to check, which is (4*n-1)^2
+
+2. Error checking is in the same loop as the counter for
+possible moves, which takes constant time to complete.
+However determining the max by one move, and the hexes
+available for capture, is outside of the error checking
+loop. The hexes available for capture takes
+O(number of hexes on board * 6), since each hex on the 
+board needs to be checked for the six sides. The max
+by one move is determined within the former function,
+but its time complexity is O(1).
+
+3. The number of hexes in a hexifence of size n is:
+3n^2 - 3n + 1
+
+Putting all this together, we get a big-O of:
+O((4n-1)^2 + 6(3n^2 - 3n + 1))
+Which if you expand out and collect the terms becomes:
+O(34n^2 - 26n + 7)
+Assuming that the Big-O is more relevant for large values of n,
+we can focus on the largest growing term, hence:
+O(34n^2)
+(Note: We can simplify this further to say the time complexity
+is n^2, however because a hexifence is very unlikely to reach
+a very large n, we felt it was important to include the constant
+of increase of n^2, to better model the efficiency)
+
+Note: We can reduce the Big-O further in several ways, for example,
+by first looking at tiles that overlap over two hexes, and not
+looking at the same tile twice. We felt that this was beyond the scope
+of Part A of the assignment, and to implement such a complex
+solution may impact our program in Part B of the assignment.
